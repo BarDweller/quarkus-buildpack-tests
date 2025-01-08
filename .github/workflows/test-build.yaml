@@ -1,30 +1,49 @@
-name: Debug
-on: 
-  workflow_dispatch:
-
 jobs:
-  build:
+  integration-tests:
+    name: Package Samples with Java ${{ matrix.java }} and JBang ${{ matrix.jbang }} for test-project ${{ matrix.project }}
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        project: [hello-quarkus,hello-spring]
+        java: [8, 11, 17]
+        jbang: [0.84.2]
+        java-buildpack-lib-sha: []        
     steps:
+      - name: Freee Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: false    
+
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Dump info
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'adopt'   
+
+      - name: Setup sdkman
         run: |
-          #echo ETC DUMP
-          #ls -al /etc
-          echo VAR RUN USER DUMP
-          ls -al /run/user/`id -u`
-          #echo VAR RUN 
-          #ls -al /var/run
-          echo RUN PODMAN
-          sudo ls -al /run/podman
-          echo PODMAN VERSION
-          podman --version
-          echo DOCKER_HOST
-          echo ${DOCKER_HOST}
-          echo PODMAN PS
-          podman ps -a
-          echo PODMAN LIST IMAGES
-          podman images list
-          echo PODMAN INFO
-          podman info
+          curl -s "https://get.sdkman.io" | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdkman_auto_answer=false
+          sdkman_selfupdate_enable=false
+
+      - name: Setup jbang
+        run: |
+          sdk install jbang ${{matrix.jbang}}
+          sdk default jbang ${{matrix.jbang}}               
+
+      - name: Drive test
+        run: |
+           echo Setting up to run ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-sha }}
+          export CURRENT_WORKFLOW_DEP=com.github.BarDweller.java-buildpack-client:buildpack-client:${{ matrix.java-buildpack-lib-sha }}
+          export PROJECT_PATH=./test-projects/${{ matrix.project }}
+          echo TEST $CURRENT_WORKFLOW_DEP $PROJECT_PATH
