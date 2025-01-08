@@ -10,13 +10,19 @@ jobs:
         uses: actions/checkout@v4
       - name: Dump info
         run: |
-          echo ETC DUMP
-          ls -al /etc
+          #echo ETC DUMP
+          #ls -al /etc
           #echo VAR RUN USER DUMP
           #ls -al /var/run/user/`id -u`/podman
-          echo VAR RUN 
-          ls -al /var/run
+          #echo VAR RUN 
+          #ls -al /var/run
+          echo RUN
+          ls -al /run
           echo PODMAN VERSION
           podman --version
           echo DOCKER_HOST
           echo ${DOCKER_HOST}
+          echo PODMAN PS
+          podman ps -a
+          echo PODMAN LIST IMAGES
+          podman images list
