@@ -2,10 +2,12 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: Prototype
+      - name: Checkout
       - uses: actions/checkout@v4
-      - run: ls -al /etc
-      - run: ls -al /var/run/user/1000/podman
-      - run: ls -al /var/run/*.sock
-      - run: podman --version
-      - run: echo Docker-Host ${DOCKER_HOST}
+      - name: Dump info
+        run: |
+          ls -al /etc
+          ls -al /var/run/user/1000/podman
+          ls -al /var/run/*.sock
+          podman --version
+          echo Docker-Host ${DOCKER_HOST}
