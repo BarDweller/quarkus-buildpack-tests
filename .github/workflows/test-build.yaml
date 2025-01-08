@@ -12,10 +12,10 @@ jobs:
         run: |
           echo ETC DUMP
           ls -al /etc
-          echo VAR RUN USER DUMP
-          ls -al /var/run/user/`id -u`/podman
-          echo VAR RUN SOCK 
-          ls -al /var/run/*.sock
+          #echo VAR RUN USER DUMP
+          #ls -al /var/run/user/`id -u`/podman
+          echo VAR RUN 
+          ls -al /var/run
           echo PODMAN VERSION
           podman --version
           echo DOCKER_HOST
