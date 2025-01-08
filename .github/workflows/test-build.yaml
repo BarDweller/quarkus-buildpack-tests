@@ -11,7 +11,7 @@ jobs:
       - name: Dump info
         run: |
           ls -al /etc
-          ls -al /var/run/user/1000/podman
+          ls -al /var/run/user/`id -u`/podman
           ls -al /var/run/*.sock
           podman --version
           echo Docker-Host ${DOCKER_HOST}
