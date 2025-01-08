@@ -1,3 +1,10 @@
+name: Debug
+defaults:
+  run:
+    shell: bash -ieo pipefail {0}
+on: 
+  workflow_dispatch:
+
 jobs:
   integration-tests:
     name: Package Samples with Java ${{ matrix.java }} and JBang ${{ matrix.jbang }} for test-project ${{ matrix.project }}
