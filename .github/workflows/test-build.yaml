@@ -12,12 +12,12 @@ jobs:
         run: |
           #echo ETC DUMP
           #ls -al /etc
-          #echo VAR RUN USER DUMP
-          #ls -al /var/run/user/`id -u`/podman
+          echo VAR RUN USER DUMP
+          ls -al /run/user/`id -u`
           #echo VAR RUN 
           #ls -al /var/run
-          echo RUN
-          ls -al /run
+          echo RUN PODMAN
+          ls -al /run/podman
           echo PODMAN VERSION
           podman --version
           echo DOCKER_HOST
@@ -26,3 +26,5 @@ jobs:
           podman ps -a
           echo PODMAN LIST IMAGES
           podman images list
+          echo PODMAN INFO
+          podman info
