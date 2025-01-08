@@ -5,9 +5,9 @@ jobs:
     strategy:
       matrix:
         project: [hello-quarkus,hello-spring]
-        java: [8, 11, 17]
+        java: [8]
         jbang: [0.84.2]
-        java-buildpack-lib-sha: []        
+        java-buildpack-lib-sha: [FISH]        
     steps:
       - name: Freee Disk Space
         uses: jlumbroso/free-disk-space@main
@@ -39,11 +39,11 @@ jobs:
       - name: Setup jbang
         run: |
           sdk install jbang ${{matrix.jbang}}
-          sdk default jbang ${{matrix.jbang}}               
+          sdk default jbang ${{matrix.jbang}}
 
       - name: Drive test
         run: |
-           echo Setting up to run ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-sha }}
+          echo Setting up to run ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-sha }}
           export CURRENT_WORKFLOW_DEP=com.github.BarDweller.java-buildpack-client:buildpack-client:${{ matrix.java-buildpack-lib-sha }}
           export PROJECT_PATH=./test-projects/${{ matrix.project }}
           echo TEST $CURRENT_WORKFLOW_DEP $PROJECT_PATH
