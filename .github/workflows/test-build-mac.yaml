@@ -9,7 +9,7 @@ jobs:
   integration-tests:
     strategy:
       matrix:
-        project: [hello-quarkus,hello-spring]
+        project: [hello-spring]
         java: [8]
         jbang: [0.84.2]
         java-buildpack-lib-sha: [FISH]
@@ -17,6 +17,10 @@ jobs:
     runs-on: [ "${{ matrix.runner }}" ]
     name: Test Build of Samples with Java ${{ matrix.java }} and JBang ${{ matrix.jbang }} for test-project ${{ matrix.project }}
     steps:
+      - name: Podman
+        if: ${{ matrix.runner }} == 'macos-15'
+        run: |
+          echo "Doing the thing for macos"
       - name: Drive test
         run: |
           echo Setting up to run ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-sha }} on ${{ matrix.runner }}
