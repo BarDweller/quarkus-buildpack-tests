@@ -22,13 +22,16 @@ jobs:
         run: |
           echo "Doing the thing for macos"
           cd /tmp
-          wget "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
+          wget -nv "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
           sudo installer -pkg /tmp/podman-installer-macos-universal.pkg -target /
-          podman --version
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
         run: |
           echo "Doing the thing for ubuntu" 
+
+      - name: Podman Info
+        run: |
+          podman info
           
       - name: Drive test
         run: |
