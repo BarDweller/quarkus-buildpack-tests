@@ -15,12 +15,15 @@ jobs:
         java-buildpack-lib-sha: [FISH]
         runner: [ macos-15,ubuntu-24.04 ]
     runs-on: [ "${{ matrix.runner }}" ]
-    name: Test ${{ matrix.java }} JBang ${{ matrix.jbang }} Project ${{ matrix.project }} Runner ${{ matrix.runner }}
+    name: Test Java ${{ matrix.java }} JBang ${{ matrix.jbang }} Project ${{ matrix.project }} Runner ${{ matrix.runner }}
     steps:
       - name: Podman Mac
         if: matrix.runner == 'macos-15'
         run: |
           echo "Doing the thing for macos"
+          wget "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
+          chmod +x ./podman-installer-macos-universal.pkg
+          ./podman-installer-macos-universal.pkg
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
         run: |
