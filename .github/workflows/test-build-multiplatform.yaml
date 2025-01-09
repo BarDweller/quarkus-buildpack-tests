@@ -21,9 +21,9 @@ jobs:
         if: matrix.runner == 'macos-15'
         run: |
           echo "Doing the thing for macos"
-          wget "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
-          chmod +x ./podman-installer-macos-universal.pkg
-          ./podman-installer-macos-universal.pkg
+          curl -sS "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg" > ./podman-installer-macos-universal.pkg
+          sudo installer -pkg ./podman-installer-macos-universal.pkg -target /
+          podman --version
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
         run: |
