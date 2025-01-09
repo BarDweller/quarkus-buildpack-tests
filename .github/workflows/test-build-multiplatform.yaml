@@ -23,7 +23,7 @@ jobs:
           echo "Doing the thing for macos"
           cd /tmp
           wget "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
-          sudo installer -pkg /tmp/podman.pkg -target /
+          sudo installer -pkg /tmp/podman-installer-macos-universal.pkg -target /
           podman --version
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
