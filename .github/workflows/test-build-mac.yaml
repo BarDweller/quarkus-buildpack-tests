@@ -1,4 +1,4 @@
-name: Debug
+name: Multi Platform Runner 
 defaults:
   run:
     shell: bash -ieo pipefail {0}
@@ -7,7 +7,6 @@ on:
 
 jobs:
   integration-tests:
-    name: Test Build of Samples with Java ${{ matrix.java }} and JBang ${{ matrix.jbang }} for test-project ${{ matrix.project }}
     strategy:
       matrix:
         project: [hello-quarkus,hello-spring]
@@ -16,6 +15,7 @@ jobs:
         java-buildpack-lib-sha: [FISH]
         runner: [macos-15,ubuntu-24.04]
     runs-on: [ "${{ matrix.runner }}" ]
+    name: Test Build of Samples with Java ${{ matrix.java }} and JBang ${{ matrix.jbang }} for test-project ${{ matrix.project }}
     steps:
       - name: Drive test
         run: |
