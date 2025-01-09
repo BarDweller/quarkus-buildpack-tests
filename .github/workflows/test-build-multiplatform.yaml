@@ -26,7 +26,7 @@ jobs:
           sudo installer -pkg /tmp/podman-installer-macos-universal.pkg -target /
           export PATH=$PATH:/opt/podman/bin
           podman --log-level=debug machine init
-          podman machine start
+          podman --log-level=debug machine start
           
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
