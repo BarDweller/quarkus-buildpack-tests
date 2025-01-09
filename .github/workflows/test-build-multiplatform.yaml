@@ -17,10 +17,11 @@ jobs:
     runs-on: [ "${{ matrix.runner }}" ]
     name: Test ${{ matrix.java }} JBang ${{ matrix.jbang }} Project ${{ matrix.project }} Runner ${{ matrix.runner }}
     steps:
-      - name: Podman
+      - name: Podman Mac
         if: ${{ matrix.runner }} == 'macos-15'
         run: |
           echo "Doing the thing for macos"
+      - name: Podman Ubuntu
         if: ${{ matrix.runner }} == 'ubuntu-24.04'
         run: |
           echo "Doing the thing for ubuntu" 
