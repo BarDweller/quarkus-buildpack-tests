@@ -13,16 +13,16 @@ jobs:
         java: [8]
         jbang: [0.84.2]
         java-buildpack-lib-sha: [FISH]
-        runner: [macos-15,ubuntu-24.04]
+        runner: [ macos-15,ubuntu-24.04 ]
     runs-on: [ "${{ matrix.runner }}" ]
     name: Test ${{ matrix.java }} JBang ${{ matrix.jbang }} Project ${{ matrix.project }} Runner ${{ matrix.runner }}
     steps:
       - name: Podman Mac
-        if: ${{ matrix.runner }} == 'macos-15'
+        if: matrix.runner == 'macos-15'
         run: |
           echo "Doing the thing for macos"
       - name: Podman Ubuntu
-        if: ${{ matrix.runner }} == 'ubuntu-24.04'
+        if: matrix.runner == 'ubuntu-24.04'
         run: |
           echo "Doing the thing for ubuntu" 
           
