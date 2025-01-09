@@ -25,11 +25,17 @@ jobs:
           wget -nv "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-arm64.pkg"
           sudo installer -pkg /tmp/podman-installer-macos-arm64.pkg -target /
           export PATH=$PATH:/opt/podman/bin
-          podman info
+          podman machine init
+          podman machine start
+          
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
         run: |
           echo "Doing the thing for ubuntu" 
+
+      - name: Podman info
+        run: |
+          podman info
           
       - name: Drive test
         run: |
