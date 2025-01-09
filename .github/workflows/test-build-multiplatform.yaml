@@ -22,10 +22,10 @@ jobs:
         run: |
           echo "Doing the thing for macos"
           cd /tmp
-          wget -nv "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-arm64.pkg"
-          sudo installer -pkg /tmp/podman-installer-macos-arm64.pkg -target /
+          wget -nv "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
+          sudo installer -pkg /tmp/podman-installer-macos-universal.pkg -target /
           export PATH=$PATH:/opt/podman/bin
-          podman machine init
+          podman --log-level=debug machine init
           podman machine start
           
       - name: Podman Ubuntu
