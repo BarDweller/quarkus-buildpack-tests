@@ -15,12 +15,16 @@ jobs:
         java-buildpack-lib-sha: [FISH]
         runner: [macos-15,ubuntu-24.04]
     runs-on: [ "${{ matrix.runner }}" ]
-    name: Test Build of Samples with Java ${{ matrix.java }} and JBang ${{ matrix.jbang }} for test-project ${{ matrix.project }}
+    name: Test ${{ matrix.java }} JBang ${{ matrix.jbang }} Project ${{ matrix.project }} Runner ${{ matrix.runner }}
     steps:
       - name: Podman
         if: ${{ matrix.runner }} == 'macos-15'
         run: |
           echo "Doing the thing for macos"
+        if: ${{ matrix.runner }} == 'ubuntu-24.04'
+        run: |
+          echo "Doing the thing for ubuntu" 
+          
       - name: Drive test
         run: |
           echo Setting up to run ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-sha }} on ${{ matrix.runner }}
