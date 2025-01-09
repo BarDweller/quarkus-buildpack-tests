@@ -1,0 +1,25 @@
+name: Debug
+defaults:
+  run:
+    shell: bash -ieo pipefail {0}
+on: 
+  workflow_dispatch:
+
+jobs:
+  integration-tests:
+    name: Test Build of Samples with Java ${{ matrix.java }} and JBang ${{ matrix.jbang }} for test-project ${{ matrix.project }}
+    strategy:
+      matrix:
+        project: [hello-quarkus,hello-spring]
+        java: [8]
+        jbang: [0.84.2]
+        java-buildpack-lib-sha: [FISH]
+        runner: [macos-15,ubuntu-24.04]
+    runs-on: [ "${{ matrix.runner }}" ]
+    steps:
+      - name: Drive test
+        run: |
+          echo Setting up to run ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-sha }} on ${{ matrix.runner }}
+          export CURRENT_WORKFLOW_DEP=com.github.BarDweller.java-buildpack-client:buildpack-client:${{ matrix.java-buildpack-lib-sha }}
+          export PROJECT_PATH=./test-projects/${{ matrix.project }}
+          echo TEST $CURRENT_WORKFLOW_DEP $PROJECT_PATH
