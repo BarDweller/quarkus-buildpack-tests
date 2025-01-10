@@ -2,7 +2,7 @@
 
 //REPOS mavencentral,jitpack
 //DEPS org.slf4j:slf4j-simple:1.7.30
-//DEPS ${env.CURRENT_WORKFLOW_DEP:dev.snowdrop:buildpack-client:0.0.13-SNAPSHOT}
+//DEPS ${env.CURRENT_WORKFLOW_DEP}
 
 
 import java.io.File;
@@ -10,6 +10,7 @@ import dev.snowdrop.buildpack.*;
 import dev.snowdrop.buildpack.config.*;
 import dev.snowdrop.buildpack.docker.*;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Optional;
 
 import com.github.dockerjava.api.DockerClient;
@@ -35,11 +36,14 @@ public class RunTest {
 
       System.out.println("RunTest Building path '"+projectPath+"' using '"+builderImage+"' requesting jdk '"+JDK+"'");
 
+      Map<String,String> envMap = new HashMap<>();
+      envMap.put("BP_JVM_VERSION",JDK);
+
       int exitCode = BuildConfig.builder()
                            .withBuilderImage(new ImageReference(builderImage))
                            .withOutputImage(new ImageReference(outputImage))
                            .withNewPlatformConfig()
-                              .withEnvironment(Map.of("BP_JVM_VERSION",JDK))
+                              .withEnvironment(envMap)
                            .and()
                            .withNewLogConfig()
                               .withLogger(new SystemLogger())
