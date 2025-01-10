@@ -64,11 +64,14 @@ jobs:
           sdkman_auto_answer=false
           sdkman_selfupdate_enable=false
           echo "$HOME/.sdkman/bin" >> $GITHUB_PATH
+          which sdkman
+          ls -al ~/.sdkman
 
       - name: Setup jbang
         run: |
           sdk install jbang ${{matrix.jbang}}
           sdk default jbang ${{matrix.jbang}}
+          which jbang
           echo "$HOME/.jbang/bin" >> $
           
       - name: Checkout
