@@ -72,7 +72,5 @@ jobs:
           export PROJECT_PATH=./test-projects/${{ matrix.project }}
           export JDK=${{ matrix.java }}
 
-          ls -al /run/user/`id -u`
-
           chmod +x ./test-projects/RunTest.java
           ./test-projects/RunTest.java
