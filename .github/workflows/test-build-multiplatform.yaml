@@ -31,7 +31,7 @@ jobs:
       - name: Podman Mac
         if: matrix.runner == 'macos-13'
         run: |
-          echo "Doing the thing for macos"
+          echo "Installing Podman for Mac"
           cd /tmp
           wget -nv "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
           sudo installer -pkg /tmp/podman-installer-macos-universal.pkg -target /
@@ -43,10 +43,11 @@ jobs:
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
         run: |
-          echo "Doing the thing for ubuntu" 
+          echo "Installing Podman for ubuntu (no-op)" 
 
       - name: Podman info
         run: |
+          echo "Podman information"
           podman info
 
       - name: Setup Java
@@ -75,6 +76,11 @@ jobs:
           cat $GITHUB_PATH
           echo "Dump github env"
           cat $GITHUB_ENV
+
+          ls -alR ~/.jbang
+
+          echo "Dump bashrc"
+          cat ~/.bashrc
           
       - name: Checkout
         uses: actions/checkout@v2.3.4
@@ -82,6 +88,7 @@ jobs:
       - name: Build test project
         run: |
           echo Setting up to build ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-jitpack}} on ${{ matrix.runner }}
+          source ~/.bashrc
           export CURRENT_WORKFLOW_DEP=${{ matrix.java-buildpack-lib-jitpack }}
           export PROJECT_PATH=./test-projects/${{ matrix.project }}
           export JDK=${{ matrix.java }}
