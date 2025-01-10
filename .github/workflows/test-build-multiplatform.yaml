@@ -71,8 +71,8 @@ jobs:
           
       - name: Build test project
         run: |
-          echo Setting up to build ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-jitpack }} on ${{ matrix.runner }}
-          export CURRENT_WORKFLOW_DEP=${{ java-buildpack-lib-jitpack }}
+          echo Setting up to build ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-jitpack}} on ${{ matrix.runner }}
+          export CURRENT_WORKFLOW_DEP=${{ matrix.java-buildpack-lib-jitpack }}
           export PROJECT_PATH=./test-projects/${{ matrix.project }}
           export JDK=${{ matrix.java }}
           chmod +x ./test-projects/RunTest.java
