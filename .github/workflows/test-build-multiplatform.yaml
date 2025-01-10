@@ -10,7 +10,7 @@ jobs:
         project: [hello-spring]
         java: [8]
         jbang: [0.84.2]
-        java-buildpack-lib-jitpack: [ "com.github.BarDweller.java-buildpack-client:buildpack-client:97f2971c4c46ea01c760de4b54a8cc2baf2d84bc" ]
+        java-buildpack-lib-jitpack: [ "com.github.BarDweller.java-buildpack-client:buildpack-client:podman-workaround-SNAPSHOT" ]
         runner: [ macos-13,ubuntu-24.04 ]
     runs-on: [ "${{ matrix.runner }}" ]
     name: Java ${{ matrix.java }} ${{ matrix.project }} ${{ matrix.runner }}
