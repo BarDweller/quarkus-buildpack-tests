@@ -17,6 +17,19 @@ jobs:
     runs-on: [ "${{ matrix.runner }}" ]
     name: Test Java ${{ matrix.java }} JBang ${{ matrix.jbang }} Project ${{ matrix.project }} Runner ${{ matrix.runner }}
     steps:
+
+      - name: Freee Disk Space for Ubuntu
+        if: matrix.runner == 'ubuntu-24.04'
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: false
+
       - name: Podman Mac
         if: matrix.runner == 'macos-13'
         run: |
@@ -37,10 +50,30 @@ jobs:
       - name: Podman info
         run: |
           podman info
-          
-      - name: Drive test
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'adopt'
+
+      - name: Setup sdkman
         run: |
-          echo Setting up to run ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-jitpack }} on ${{ matrix.runner }}
+          curl -s "https://get.sdkman.io" | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdkman_auto_answer=false
+          sdkman_selfupdate_enable=false
+
+      - name: Setup jbang
+        run: |
+          sdk install jbang ${{matrix.jbang}}
+          sdk default jbang ${{matrix.jbang}}
+          
+      - name: Build test project
+        run: |
+          echo Setting up to build ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-jitpack }} on ${{ matrix.runner }}
           export CURRENT_WORKFLOW_DEP=${{ java-buildpack-lib-jitpack }}
           export PROJECT_PATH=./test-projects/${{ matrix.project }}
-          echo TEST $CURRENT_WORKFLOW_DEP $PROJECT_PATH
+          export JDK=${{ matrix.java }}
+          chmod +x ./test-projects/RunTest.java
+          ./test-projects/RunTest.java

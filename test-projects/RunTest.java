@@ -10,6 +10,7 @@ import dev.snowdrop.buildpack.*;
 import dev.snowdrop.buildpack.config.*;
 import dev.snowdrop.buildpack.docker.*;
 import java.util.Map;
+import java.util.Optional;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.InspectImageResponse;
@@ -27,16 +28,17 @@ public class RunTest {
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.lifecycle","debug");
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.lifecycle.phases","debug");
 
-      String projectPath = Optional.of(System.getenv("PROJECT_PATH")).orElse(".");
-      String JDK = Optional.of(System.getenv("JDK")).orElse("17");
-      String builderImage = Optional.of(System.getenv("BUILDER_IMAGE")).orElse("docker.io/paketocommunity/builder-ubi-base");
-      String outputImage = Optional.of(System.getenv("OUTPUT_IMAGE")).orElse("snowdrop/hello-quarkus:jvm"+JDK);
+      String projectPath = Optional.ofNullable(System.getenv("PROJECT_PATH")).orElse(".");
+      String JDK = Optional.ofNullable(System.getenv("JDK")).orElse("17");
+      String builderImage = Optional.ofNullable(System.getenv("BUILDER_IMAGE")).orElse("docker.io/paketocommunity/builder-ubi-base");
+      String outputImage = Optional.ofNullable(System.getenv("OUTPUT_IMAGE")).orElse("snowdrop/hello-quarkus:jvm"+JDK);
+
+      System.out.println("RunTest Building path '"+projectPath+"' using '"+builderImage+"' requesting jdk '"+JDK+"'");
 
       int exitCode = BuildConfig.builder()
                            .withBuilderImage(new ImageReference(builderImage))
                            .withOutputImage(new ImageReference(outputImage))
                            .withNewPlatformConfig()
-                              .withPhaseDebugScript(debugScript)
                               .withEnvironment(Map.of("BP_JVM_VERSION",JDK))
                            .and()
                            .withNewLogConfig()
