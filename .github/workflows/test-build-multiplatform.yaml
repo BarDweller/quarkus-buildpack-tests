@@ -13,7 +13,7 @@ jobs:
         java-buildpack-lib-jitpack: [ "com.github.BarDweller.java-buildpack-client:buildpack-client:97f2971c4c46ea01c760de4b54a8cc2baf2d84bc" ]
         runner: [ macos-13,ubuntu-24.04 ]
     runs-on: [ "${{ matrix.runner }}" ]
-    name: Test Java ${{ matrix.java }} JBang ${{ matrix.jbang }} Project ${{ matrix.project }} Runner ${{ matrix.runner }}
+    name: Java ${{ matrix.java }} ${{ matrix.project }} ${{ matrix.runner }}
     steps:
 
       - name: Freee Disk Space for Ubuntu
@@ -79,8 +79,13 @@ jobs:
 
           ls -al ~/.*
 
+          ls -al ~/.sdkman/bin
+
           echo "Dump bashrc"
           cat ~/.bashrc
+
+          echo "which jbang"
+          which jbang
           
       - name: Checkout
         uses: actions/checkout@v2.3.4
