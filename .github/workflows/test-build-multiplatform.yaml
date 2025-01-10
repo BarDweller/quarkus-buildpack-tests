@@ -1,7 +1,5 @@
 name: Multi Platform Runner 
-defaults:
-  run:
-    shell: bash -ieo pipefail {0}
+
 on: 
   workflow_dispatch:
 
@@ -57,22 +55,26 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: 'adopt'
 
-      - name: Setup sdkman
+      - name: Setup sdkman and jbang
         run: |
           curl -s "https://get.sdkman.io" | bash
+
           source "$HOME/.sdkman/bin/sdkman-init.sh"
           sdkman_auto_answer=false
           sdkman_selfupdate_enable=false
-          echo "$HOME/.sdkman/bin" >> $GITHUB_PATH
-          which sdkman
-          ls -al ~/.sdkman
 
-      - name: Setup jbang
-        run: |
+          echo "$HOME/.sdkman/bin" >> $GITHUB_PATH
+          echo "sdkman_auto_answer=false" >> $GITHUB_ENV
+          echo "sdkman_selfupdate_enable=false" >> $GITHUB_ENV
+
           sdk install jbang ${{matrix.jbang}}
           sdk default jbang ${{matrix.jbang}}
-          which jbang
-          echo "$HOME/.jbang/bin" >> $
+          echo "$HOME/.jbang/bin" >> $GITHUB_PATH
+
+          echo "Dump github path"
+          cat $GITHUB_PATH
+          echo "Dump github env"
+          cat $GITHUB_ENV
           
       - name: Checkout
         uses: actions/checkout@v2.3.4
