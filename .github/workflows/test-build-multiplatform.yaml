@@ -63,11 +63,13 @@ jobs:
           source "$HOME/.sdkman/bin/sdkman-init.sh"
           sdkman_auto_answer=false
           sdkman_selfupdate_enable=false
+          echo "$HOME/.sdkman/bin" >> $GITHUB_PATH
 
       - name: Setup jbang
         run: |
           sdk install jbang ${{matrix.jbang}}
           sdk default jbang ${{matrix.jbang}}
+          echo "$HOME/.jbang/bin" >> $GITHUB_PATH
           
       - name: Build test project
         run: |
