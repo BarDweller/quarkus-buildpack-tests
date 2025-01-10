@@ -25,6 +25,7 @@ jobs:
           wget -nv "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
           sudo installer -pkg /tmp/podman-installer-macos-universal.pkg -target /
           export PATH=$PATH:/opt/podman/bin
+          echo "/opt/podman/bin" >> $GITHUB_PATH
           podman --log-level=debug machine init
           podman --log-level=debug machine start
           
