@@ -77,7 +77,7 @@ jobs:
           echo "Dump github env"
           cat $GITHUB_ENV
 
-          ls -alR ~/.jbang
+          ls -al ~/.*
 
           echo "Dump bashrc"
           cat ~/.bashrc
