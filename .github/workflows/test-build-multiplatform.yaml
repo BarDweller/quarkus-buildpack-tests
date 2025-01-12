@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         project: [hello-spring]
-        java: [8]
+        java: [17]
         java-buildpack-lib-jitpack: [ "com.github.BarDweller.java-buildpack-client:buildpack-client:886e079b2e" ]
         runner: [ macos-13,ubuntu-24.04 ]
     runs-on: [ "${{ matrix.runner }}" ]
