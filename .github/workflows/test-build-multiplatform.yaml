@@ -39,11 +39,13 @@ jobs:
           echo "/opt/podman/bin" >> $GITHUB_PATH
           podman machine init
           podman machine start
+          echo 'mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf && systemctl restart podman.socket' |  podman machine ssh --username root --
           
       - name: Podman Ubuntu
         if: matrix.runner == 'ubuntu-24.04'
         run: |
-          echo "Installing Podman for ubuntu (no-op)" 
+          echo "Configuring Podman for ubuntu (no-op)" 
+          mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
           systemctl --user start podman.socket
 
       - name: Podman info
