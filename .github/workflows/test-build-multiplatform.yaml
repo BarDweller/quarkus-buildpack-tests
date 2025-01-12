@@ -3,21 +3,41 @@ name: Multi Platform Runner
 on: 
   workflow_dispatch:
 
+# TODO:
+#   Add podman rootful/rootless split testing
+#   Add docker testing for linux
+#   Add windows podman testing
+#   Verify built image is able to run.. 
+#   Add test projects for java 8 and java 11 (older spring/quarkus levels needed)  
+
 jobs:
   integration-tests:
+
     strategy:
+      # Each test is a different scenario, do not cancel running tests if one fails.
       fail-fast: false
       matrix:
-        project: [hello-spring]
-        java: [17]
-        java-buildpack-lib-jitpack: [ "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32" ]
-        runner: [ macos-13,ubuntu-24.04 ]
-    runs-on: [ "${{ matrix.runner }}" ]
-    name: Java ${{ matrix.java }} ${{ matrix.project }} ${{ matrix.runner }}
+        # Define projects to test, don't use generated matrix, as will need projects appropriate for each jvm to test
+        projects: {
+          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
+          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
+          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
+          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
+          { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
+          { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
+          { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
+          { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},          
+        }
+
+    runs-on: [ "${{ matrix.projects.runner }}" ]
+    # Keep name short, as github ui does not allow many characters to be displayed
+    name: Java ${{ matrix.projects.java }} ${{ matrix.projects.project }} ${{ matrix.projects.runner }}
+
     steps:
 
+      # Maybe no longer required now lib doesn't attempt to download the planet when getting tagless images.
       - name: Freee Disk Space for Ubuntu
-        if: matrix.runner == 'ubuntu-24.04'
+        if: matrix.projects.runner == 'ubuntu-24.04'
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
@@ -28,51 +48,70 @@ jobs:
           docker-images: true
           swap-storage: false
 
+      # Install and configure podman for mac
       - name: Podman Mac
-        if: matrix.runner == 'macos-13'
+        if: matrix.projects.runner == 'macos-13'
         run: |
           echo "Installing Podman for Mac"
           cd /tmp
           wget -nv "https://github.com/containers/podman/releases/download/v5.3.1/podman-installer-macos-universal.pkg"
           sudo installer -pkg /tmp/podman-installer-macos-universal.pkg -target /
           export PATH=$PATH:/opt/podman/bin
+
+          # Add Podman to path for future steps.
           echo "/opt/podman/bin" >> $GITHUB_PATH
+
+          # launch podman
           podman machine init
           podman machine start
+
+          # reconfigure timeouts inside podman vm to be compatible with java docker api
           echo 'mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf && systemctl restart podman.socket' |  podman machine ssh --username root --
-          
+      
+      # Configure podman for ubuntu
       - name: Podman Ubuntu
-        if: matrix.runner == 'ubuntu-24.04'
+        if: matrix.projects.runner == 'ubuntu-24.04'
         run: |
-          echo "Configuring Podman for ubuntu (no-op)" 
+          echo "Configuring Podman for ubuntu)" 
+
+          # reconfigure timeouts for podman to be compatible with java docker api
           mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
+
+          # start the podman user socket
           systemctl --user start podman.socket
 
+      # Dump info about podman in case we need to report errors
       - name: Podman info
         run: |
           echo "Podman information"
           podman info
 
+      # Install appropriate level jdk
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
-          java-version: ${{ matrix.java }}
+          java-version: ${{ matrix.projects.java }}
           distribution: 'adopt'
 
+      # Install jbang (required to run tests)
       - name: Setup jbang
         run: |
           curl -Ls "https://sh.jbang.dev" | bash -s - app setup
+
+          # Add jbang to the path for future steps.
           echo "$HOME/.jbang/bin" >> $GITHUB_PATH
           
+      # Checkout the project
       - name: Checkout
         uses: actions/checkout@v2.3.4
-        
+      
+      # Build the matrix specificied project with the options configured.
       - name: Build test project
         run: |
-          echo Setting up to build ${{ matrix.project }} with ${{ matrix.java-buildpack-lib-jitpack}} on ${{ matrix.runner }}
-          export CURRENT_WORKFLOW_DEP=${{ matrix.java-buildpack-lib-jitpack }}
-          export PROJECT_PATH=./test-projects/${{ matrix.project }}
-          export JDK=${{ matrix.java }}
+          echo Setting up to build ${{ matrix.projects.project }} with ${{ matrix.projects.java-buildpack-lib-jitpack}} on ${{ matrix.projects.runner }}
+          export CURRENT_WORKFLOW_DEP=${{ matrix.projects.java-buildpack-lib-jitpack }}
+          export PROJECT_PATH=./test-projects/${{ matrix.projects.project }}
+          export JDK=${{ matrix.projects.java }}
 
           chmod +x ./test-projects/RunTest.java
           ./test-projects/RunTest.java
