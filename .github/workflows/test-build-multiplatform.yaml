@@ -103,7 +103,7 @@ jobs:
           
       # Checkout the project
       - name: Checkout
-        uses: actions/checkout@4
+        uses: actions/checkout@v4
       
       # Build the matrix specificied project with the options configured.
       - name: Build test project
