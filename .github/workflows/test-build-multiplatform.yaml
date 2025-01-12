@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         # Define projects to test, don't use generated matrix, as will need projects appropriate for each jvm to test
-        projects: {
+        projects: [
           { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
           { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
@@ -27,7 +27,7 @@ jobs:
           { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},          
-        }
+        ]
 
     runs-on: [ "${{ matrix.projects.runner }}" ]
     # Keep name short, as github ui does not allow many characters to be displayed
