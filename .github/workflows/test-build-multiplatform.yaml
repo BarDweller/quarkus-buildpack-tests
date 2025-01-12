@@ -10,7 +10,7 @@ jobs:
       matrix:
         project: [hello-spring]
         java: [17]
-        java-buildpack-lib-jitpack: [ "com.github.BarDweller.java-buildpack-client:buildpack-client:886e079b2e" ]
+        java-buildpack-lib-jitpack: [ "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32" ]
         runner: [ macos-13,ubuntu-24.04 ]
     runs-on: [ "${{ matrix.runner }}" ]
     name: Java ${{ matrix.java }} ${{ matrix.project }} ${{ matrix.runner }}
