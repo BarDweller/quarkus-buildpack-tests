@@ -165,7 +165,7 @@ jobs:
           $env:JDK="${{ matrix.projects.java }}"
 
           cd test-projects
-          jbang run RunTest.java
+          $HOME\.jbang\bin\jbang run RunTest.java
           
           
       # Build the matrix specificied project with the options configured.
