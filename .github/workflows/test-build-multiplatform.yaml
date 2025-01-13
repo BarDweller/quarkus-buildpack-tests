@@ -164,13 +164,16 @@ jobs:
           $env:PROJECT_PATH="${{ matrix.projects.project }}"
           $env:JDK="${{ matrix.projects.java }}"
 
+          echo "Setting up JBang command"
           $jbang = ([scriptblock]::Create($(iwr -useb https://ps.jbang.dev)))
-          
+
+          echo "Launching JBang"
           cd test-projects
           & $jbang run RunTest.java
           $jrc = $LASTEXITCODE
-          echo "jbang result: $jrc"
-          if ($jrc) { exit $jrc }
+          
+          echo "After jbang result: $jrc"
+          exit $jrc
           
       # Build the matrix specificied project with the options configured.
       - name: Build test project (unix)
