@@ -19,16 +19,17 @@ jobs:
       matrix:
         # Define projects to test, don't use generated matrix, as will need projects appropriate for each jvm to test
         projects: [
-          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
-          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
-          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
-          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
-          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman5", root: "rootless"},
-          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "docker", root: "rootless"}
+         # { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
+         # { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
+         # { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"}, 
+         # { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
+         # { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman5", root: "rootless"},
+         # { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "docker"}
          # { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
          # { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
          # { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
-         # { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},          
+         # { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
+         { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "windows-latest", runtime: "docker"}
         ]
 
     runs-on: [ "${{ matrix.projects.runner }}" ]
@@ -135,19 +136,40 @@ jobs:
           distribution: 'adopt'
 
       # Install jbang (required to run tests)
-      - name: Setup jbang
+      - name: Setup jbang (unix)
+        if: matrix.projects.runner == 'macos-13' || matrix.projects.runner == 'ubuntu-24.04'
         run: |
           curl -Ls "https://sh.jbang.dev" | bash -s - app setup
 
           # Add jbang to the path for future steps.
           echo "$HOME/.jbang/bin" >> $GITHUB_PATH
+
+      - name: Setup jbang (win)
+        if: matrix.projects.runner == 'windows-latest'
+        run: |
+          iex "& { $(iwr -useb https://ps.jbang.dev) } app setup"
+
+          # Add jbang to the path for future steps.
+          echo "$HOME\.jbang\bin" >> $GITHUB_PATH        
           
       # Checkout the project
       - name: Checkout
         uses: actions/checkout@v4
-      
+
+      - name: Build test project (win)
+        if: matrix.projects.runner == 'windows-latest'
+        run: |
+          echo Setting up to build ${{ matrix.projects.project }} with ${{ matrix.projects.java-buildpack-lib-jitpack}} on ${{ matrix.projects.runner }}
+          $env:CURRENT_WORKFLOW_DEP=${{ matrix.projects.java-buildpack-lib-jitpack }}
+          $env:PROJECT_PATH=.\test-projects\${{ matrix.projects.project }}
+          $env:JDK=${{ matrix.projects.java }}
+
+          .\test-projects\RunTest.java
+          
+          
       # Build the matrix specificied project with the options configured.
-      - name: Build test project
+      - name: Build test project (unix)
+        if: matrix.projects.runner == 'macos-13' || matrix.projects.runner == 'ubuntu-24.04'
         run: |
           echo Setting up to build ${{ matrix.projects.project }} with ${{ matrix.projects.java-buildpack-lib-jitpack}} on ${{ matrix.projects.runner }}
           export CURRENT_WORKFLOW_DEP=${{ matrix.projects.java-buildpack-lib-jitpack }}
