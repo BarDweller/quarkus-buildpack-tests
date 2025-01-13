@@ -77,7 +77,7 @@ jobs:
           echo "Configuring Podman 4 for ubuntu" 
 
           # reconfigure timeouts for podman to be compatible with java docker api
-          mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
+          sudo mkdir -p /etc/containers/containers.conf.d && sudo printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
 
           # start the podman user socket
           systemctl --user start podman.socket
@@ -99,11 +99,19 @@ jobs:
           brew services start podman
           
           # reconfigure timeouts for podman to be compatible with java docker api
-          mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
+          sudo mkdir -p /etc/containers/containers.conf.d && sudo printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
 
           # restart to allow config to take effect
-          brew services restart podman          
+          brew services restart podman    
+          
+      - name: Docker Ubuntu
+        if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'docker'
+        run: |
+          echo "Configuring Docker for ubuntu" 
 
+          # Remove the podman, to allow library autodetect to find docker
+          sudo apt-get remove podman
+        
       # Dump info about podman in case we need to report errors
       - name: Podman info
         if: matrix.projects.runtime == 'podman4' || matrix.projects.runtime == 'podman5'
