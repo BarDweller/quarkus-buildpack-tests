@@ -168,7 +168,9 @@ jobs:
           
           cd test-projects
           & $jbang run RunTest.java
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $jrc = $LASTEXITCODE
+          echo "jbang result: $jrc"
+          if ($jrc) { exit $jrc }
           
       # Build the matrix specificied project with the options configured.
       - name: Build test project (unix)
