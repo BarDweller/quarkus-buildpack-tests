@@ -161,10 +161,11 @@ jobs:
         run: |
           echo "Setting up to build ${{ matrix.projects.project }} with ${{ matrix.projects.java-buildpack-lib-jitpack}} on ${{ matrix.projects.runner }}"
           $env:CURRENT_WORKFLOW_DEP="${{ matrix.projects.java-buildpack-lib-jitpack }}"
-          $env:PROJECT_PATH=".\test-projects\${{ matrix.projects.project }}"
+          $env:PROJECT_PATH="${{ matrix.projects.project }}"
           $env:JDK="${{ matrix.projects.java }}"
 
-          .\test-projects\RunTest.java
+          cd test-projects
+          jbang RunTest.java
           
           
       # Build the matrix specificied project with the options configured.
