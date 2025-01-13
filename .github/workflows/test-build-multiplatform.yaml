@@ -169,8 +169,7 @@ jobs:
 
           echo "Launching JBang"
           cd test-projects
-          & $jbang run RunTest.java
-          $jrc = $LASTEXITCODE
+          $jrc=& $jbang run RunTest.java | select -Last 1
           
           echo "After jbang result: $jrc"
           exit $jrc
