@@ -164,9 +164,10 @@ jobs:
           $env:PROJECT_PATH="${{ matrix.projects.project }}"
           $env:JDK="${{ matrix.projects.java }}"
 
-          cd test-projects
-          $HOME\.jbang\bin\jbang run RunTest.java
+          $jbang = ([scriptblock]::Create($(iwr -useb https://ps.jbang.dev)))
           
+          cd test-projects
+          & $jbang run RunTest.java          
           
       # Build the matrix specificied project with the options configured.
       - name: Build test project (unix)
