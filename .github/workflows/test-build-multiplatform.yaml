@@ -167,7 +167,8 @@ jobs:
           $jbang = ([scriptblock]::Create($(iwr -useb https://ps.jbang.dev)))
           
           cd test-projects
-          & $jbang run RunTest.java          
+          & $jbang run RunTest.java
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
           
       # Build the matrix specificied project with the options configured.
       - name: Build test project (unix)
