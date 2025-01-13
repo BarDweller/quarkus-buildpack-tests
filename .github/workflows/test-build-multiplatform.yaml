@@ -19,19 +19,21 @@ jobs:
       matrix:
         # Define projects to test, don't use generated matrix, as will need projects appropriate for each jvm to test
         projects: [
-          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
-          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
-          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
-          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
-          { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
-          { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},
-          { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13"},
-          { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04"},          
+          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
+          { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
+          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
+          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
+          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman5", root: "rootless"},
+          { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "docker", root: "rootless"}
+         # { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
+         # { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
+         # { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "macos-13", runtime: "podman5", root: "rootless"},
+         # { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:8de67fbe32", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},          
         ]
 
     runs-on: [ "${{ matrix.projects.runner }}" ]
     # Keep name short, as github ui does not allow many characters to be displayed
-    name: Java ${{ matrix.projects.java }} ${{ matrix.projects.project }} ${{ matrix.projects.runner }}
+    name: Java ${{ matrix.projects.java }} ${{ matrix.projects.project }} ${{ matrix.projects.runtime }}
 
     steps:
 
@@ -49,8 +51,8 @@ jobs:
           swap-storage: false
 
       # Install and configure podman for mac
-      - name: Podman Mac
-        if: matrix.projects.runner == 'macos-13'
+      - name: Podman5 Mac
+        if: matrix.projects.runner == 'macos-13' && matrix.projects.runtime == 'podman5'
         run: |
           echo "Installing Podman for Mac"
           cd /tmp
@@ -69,10 +71,10 @@ jobs:
           echo 'mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf && systemctl restart podman.socket' |  podman machine ssh --username root --
       
       # Configure podman for ubuntu
-      - name: Podman Ubuntu
-        if: matrix.projects.runner == 'ubuntu-24.04'
+      - name: Podman4 Ubuntu
+        if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'podman4'
         run: |
-          echo "Configuring Podman for ubuntu)" 
+          echo "Configuring Podman 4 for ubuntu" 
 
           # reconfigure timeouts for podman to be compatible with java docker api
           mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
@@ -80,11 +82,40 @@ jobs:
           # start the podman user socket
           systemctl --user start podman.socket
 
+      - name: Set up Homebrew
+        if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'podman5'
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Podman5 Ubuntu
+        if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'podman5'
+        run: |
+          echo "Configuring Podman 5 for ubuntu" 
+
+          # Remove the old crun executable to let brew to install a newer one ...
+          sudo apt-get remove crun
+          
+          # Use brew to install podman 5
+          brew install podman
+          brew services start podman
+          
+          # reconfigure timeouts for podman to be compatible with java docker api
+          mkdir -p /etc/containers/containers.conf.d && printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
+
+          # restart to allow config to take effect
+          brew services restart podman          
+
       # Dump info about podman in case we need to report errors
       - name: Podman info
+        if: matrix.projects.runtime == 'podman4' || matrix.projects.runtime == 'podman5'
         run: |
           echo "Podman information"
           podman info
+
+      - name: Docker info
+        if: matrix.projects.runtime == 'docker'
+        run: |
+          echo "Docker information"
+          docker info
 
       # Install appropriate level jdk
       - name: Setup Java
