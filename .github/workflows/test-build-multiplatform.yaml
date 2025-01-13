@@ -77,7 +77,8 @@ jobs:
           echo "Configuring Podman 4 for ubuntu" 
 
           # reconfigure timeouts for podman to be compatible with java docker api
-          sudo mkdir -p /etc/containers/containers.conf.d && sudo printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
+          sudo mkdir -p /etc/containers/containers.conf.d
+          sudo echo "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
 
           # start the podman user socket
           systemctl --user start podman.socket
@@ -99,7 +100,8 @@ jobs:
           brew services start podman
           
           # reconfigure timeouts for podman to be compatible with java docker api
-          sudo mkdir -p /etc/containers/containers.conf.d && sudo printf "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
+          sudo mkdir -p /etc/containers/containers.conf.d
+          sudo echo "[engine]\nservice_timeout=91\n" > /etc/containers/containers.conf.d/service-timeout.conf
 
           # restart to allow config to take effect
           brew services restart podman    
