@@ -159,7 +159,7 @@ jobs:
       - name: Build test project (win)
         if: matrix.projects.runner == 'windows-latest'
         run: |
-          echo Setting up to build ${{ matrix.projects.project }} with ${{ matrix.projects.java-buildpack-lib-jitpack}} on ${{ matrix.projects.runner }}
+          echo "Setting up to build ${{ matrix.projects.project }} with ${{ matrix.projects.java-buildpack-lib-jitpack}} on ${{ matrix.projects.runner }}"
           $env:CURRENT_WORKFLOW_DEP=${{ matrix.projects.java-buildpack-lib-jitpack }}
           $env:PROJECT_PATH=.\test-projects\${{ matrix.projects.project }}
           $env:JDK=${{ matrix.projects.java }}
