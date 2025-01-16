@@ -39,6 +39,21 @@ public class RunTest {
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.lifecycle","debug");
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.lifecycle.phases","debug");
 
+      String debugScript = "#!/bin/bash\n" +
+      "echo \"DEBUG INFO\"\n" +
+      "echo \"Root Perms\"\n" +
+      "stat -c \"%A $a %u %g %n\" /*\n" +
+      "echo \"Layer dir Content\"\n" +
+      "ls -lar /layers\n" +
+      "echo \"Workspace dir Content\"\n" +
+      "ls -lar /workspace\n" +
+      "echo \"Analyzed toml\"\n" +
+      "ls -la /layers\n" +       
+      "cat /layers/analyzed.toml\n" +        
+      "LC=$1\n" +
+      "shift\n" +
+      "$LC \"$@\"";
+
       String projectPath = Optional.ofNullable(System.getenv("PROJECT_PATH")).orElse(".");
       String JDK = Optional.ofNullable(System.getenv("JDK")).orElse("17");
       String builderImage = Optional.ofNullable(System.getenv("BUILDER_IMAGE")).orElse("docker.io/paketocommunity/builder-ubi-base");
@@ -54,6 +69,7 @@ public class RunTest {
                            .withOutputImage(new ImageReference(outputImage))
                            .withNewPlatformConfig()
                               .withEnvironment(envMap)
+                              .withPhaseDebugScript(debugScript)
                            .and()
                            .withNewLogConfig()
                               .withLogger(new SystemLogger())
