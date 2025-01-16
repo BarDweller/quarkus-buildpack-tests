@@ -73,7 +73,7 @@ public class RunTest {
                            .and()
                            .withNewLogConfig()
                               .withLogger(new SystemLogger())
-                              .withLogLevel("info")
+                              .withLogLevel("debug")
                            .and()                           
                            .addNewFileContentApplication(new File(projectPath))
                            .build()
