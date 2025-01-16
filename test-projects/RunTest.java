@@ -23,6 +23,16 @@ import com.github.dockerjava.api.exception.NotFoundException;
 public class RunTest {
 
     public static void main(String... args) {
+        try{
+            run();
+        }catch(Exception e){
+            System.err.println("Error during run...");
+            e.printStackTrace();
+            System.exit(250);
+        }
+    }
+
+    private static void run() throws Exception {
 
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack","debug");
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.docker","debug");
