@@ -52,7 +52,7 @@ public class RunTest {
       "echo \"Run toml\"\n" +
       "cat /cnb/run.toml\n" +
       "echo \"Stack toml\"\n" +
-      "cat /cnb/stack.toml\"\n" +
+      "cat /cnb/stack.toml\n" +
       "echo \"DEBUG END\"\n" +    
       "LC=$1\n" +
       "shift\n" +
