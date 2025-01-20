@@ -114,6 +114,9 @@ jobs:
 
           # Remove the podman, to allow library autodetect to find docker
           sudo apt-get remove podman
+
+          # bug confirmation attempt
+          docker pull index.docker.io/paketocommunity/run-ubi-base:latest
         
       # Dump info about podman in case we need to report errors
       - name: Podman info
