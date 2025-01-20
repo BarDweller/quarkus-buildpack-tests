@@ -47,9 +47,13 @@ public class RunTest {
       "ls -lar /layers\n" +
       "echo \"Workspace dir Content\"\n" +
       "ls -lar /workspace\n" +
-      "echo \"Analyzed toml\"\n" +
-      "ls -la /layers\n" +       
-      "cat /layers/analyzed.toml\n" +        
+      "echo \"Analyzed toml\"\n" +   
+      "cat /layers/analyzed.toml\n" +
+      "echo \"Run toml\"\n" +
+      "cat /cnb/run.toml\n" +
+      "echo \"Stack toml\"\n" +
+      "cat /cnb/stack.toml\"\n" +
+      "echo \"DEBUG END\"\n" +    
       "LC=$1\n" +
       "shift\n" +
       "$LC \"$@\"";
