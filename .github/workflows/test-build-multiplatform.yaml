@@ -116,8 +116,8 @@ jobs:
           sudo apt-get remove podman
 
           # bug confirmation attempt
-          echo "Pulling run image using index.docker.io"
-          docker pull index.docker.io/paketocommunity/run-ubi-base:latest
+          echo "Pulling run image using index.docker.io"          
+          docker pull index.docker.io/paketocommunity/run-java-17-ubi-base@sha256:263206c327b541940d04ad3d8f50bda8218b58a2a11cba48eb5aec598062a24d
         
       # Dump info about podman in case we need to report errors
       - name: Podman info
