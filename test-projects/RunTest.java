@@ -73,6 +73,7 @@ public class RunTest {
                            .withOutputImage(new ImageReference(outputImage))
                            .withNewPlatformConfig()
                               .withEnvironment(envMap)
+                              .withPlatformLevel("0.12")
                               .withPhaseDebugScript(debugScript)
                            .and()
                            .withNewLogConfig()
