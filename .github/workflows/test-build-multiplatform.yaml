@@ -115,6 +115,10 @@ jobs:
           # Remove the podman, to allow library autodetect to find docker
           sudo apt-get remove podman
 
+          echo "FROM paketocommunity/run-java-17-ubi-base:latest" > Dockerfile
+          echo "RUN echo hi" >> Dockerfile
+          docker build -t derp.bad.host.ca/localonlyimage:latest .
+          
       # Dump info about podman in case we need to report errors
       - name: Podman info
         if: matrix.projects.runtime == 'podman4' || matrix.projects.runtime == 'podman5'
