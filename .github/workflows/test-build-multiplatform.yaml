@@ -23,8 +23,8 @@ jobs:
          # { project: "hello-spring", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:9a50edc7f7", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
          # { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:9a50edc7f7", runner: "macos-13", runtime: "podman5", root: "rootless"}, 
          # { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:9a50edc7f7", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
-           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:f94ffe0a0c", runner: "ubuntu-24.04", runtime: "podman5", root: "rootless"},
-           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:f94ffe0a0c", runner: "ubuntu-24.04", runtime: "docker"}
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e30570bb1d", runner: "ubuntu-24.04", runtime: "podman5", root: "rootless"},
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e30570bb1d", runner: "ubuntu-24.04", runtime: "docker"}
          # { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:9a50edc7f7", runner: "macos-13", runtime: "podman5", root: "rootless"},
          # { project: "hello-spring", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:9a50edc7f7", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
          # { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:9a50edc7f7", runner: "macos-13", runtime: "podman5", root: "rootless"},
