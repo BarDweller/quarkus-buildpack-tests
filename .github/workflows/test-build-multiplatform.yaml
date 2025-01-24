@@ -117,7 +117,7 @@ jobs:
 
           echo "FROM paketocommunity/run-java-17-ubi-base:latest" > Dockerfile
           echo "RUN echo hi" >> Dockerfile
-          docker build -t derp.bad.host.ca/localonlyimage:latest .
+          docker build -t localonlyimage:latest .
           
       # Dump info about podman in case we need to report errors
       - name: Podman info
