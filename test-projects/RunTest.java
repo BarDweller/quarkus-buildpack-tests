@@ -69,9 +69,11 @@ public class RunTest {
       Map<String,String> envMap = new HashMap<>();
       envMap.put("BP_JVM_VERSION",JDK);
 
+      int exitCode = 0;
+
       OperatingSytem os = OperatingSytem.getOperationSystem();
-      if(os != OperatingSystem.WIN) {
-          int exitCode = BuildConfig.builder()
+      if(os != WIN) {
+          exitCode = BuildConfig.builder()
                            .withBuilderImage(new ImageReference(builderImage))
                            .withOutputImage(new ImageReference(outputImage))
                            .withNewPlatformConfig()
@@ -87,6 +89,9 @@ public class RunTest {
                            .build()
                            .getExitCode();
       }else{
+          //github windows runner cannot run linux docker containers, 
+          //so we'll just test the ability for the library to correctly talk
+          //to the docker daemon.
           DockerClient dc = DockerClientUtils.getDockerClient();
           try{
             dc.pingCmd().exec();
