@@ -72,7 +72,7 @@ public class RunTest {
       int exitCode = 0;
 
       OperatingSytem os = OperatingSytem.getOperationSystem();
-      if(os != WIN) {
+      if(os != OperatingSytem.WIN) {
           exitCode = BuildConfig.builder()
                            .withBuilderImage(new ImageReference(builderImage))
                            .withOutputImage(new ImageReference(outputImage))
