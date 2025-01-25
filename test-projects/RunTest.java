@@ -9,6 +9,7 @@ import java.io.File;
 import dev.snowdrop.buildpack.*;
 import dev.snowdrop.buildpack.config.*;
 import dev.snowdrop.buildpack.docker.*;
+import dev.snowdrop.buildpack.utils.*;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Optional;
@@ -68,7 +69,9 @@ public class RunTest {
       Map<String,String> envMap = new HashMap<>();
       envMap.put("BP_JVM_VERSION",JDK);
 
-      int exitCode = BuildConfig.builder()
+      OperatingSystem os = OperatingSystem.getOperationSystem();
+      if(os != OperatingSystem.WIN) {
+          int exitCode = BuildConfig.builder()
                            .withBuilderImage(new ImageReference(builderImage))
                            .withOutputImage(new ImageReference(outputImage))
                            .withNewPlatformConfig()
@@ -83,6 +86,14 @@ public class RunTest {
                            .addNewFileContentApplication(new File(projectPath))
                            .build()
                            .getExitCode();
+      }else{
+          DockerClient dc = DockerClientUtils.getDockerClient();
+          try{
+            dc.pingCmd().exec();
+          }catch(Exception e){
+            throw new RuntimeException("Unable to verify docker settings", e);
+          }
+      }
 
       System.exit(exitCode);
     }
