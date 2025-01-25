@@ -9,7 +9,7 @@ import java.io.File;
 import dev.snowdrop.buildpack.*;
 import dev.snowdrop.buildpack.config.*;
 import dev.snowdrop.buildpack.docker.*;
-import dev.snowdrop.buildpack.utils.*;
+import dev.snowdrop.buildpack.utils.OperatingSytem;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Optional;
@@ -69,7 +69,7 @@ public class RunTest {
       Map<String,String> envMap = new HashMap<>();
       envMap.put("BP_JVM_VERSION",JDK);
 
-      OperatingSystem os = OperatingSystem.getOperationSystem();
+      OperatingSytem os = OperatingSytem.getOperationSystem();
       if(os != OperatingSystem.WIN) {
           int exitCode = BuildConfig.builder()
                            .withBuilderImage(new ImageReference(builderImage))
