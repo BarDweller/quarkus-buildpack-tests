@@ -167,9 +167,6 @@ jobs:
           echo "Setting up JBang command"
           $jbang = ([scriptblock]::Create($(iwr -useb https://ps.jbang.dev)))
 
-          echo "Requesting windows use linux containers"
-          & $Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchDaemon
-
           echo "Launching JBang"
           cd test-projects
           $jrc=& $jbang run RunTest.java | select -Last 1
