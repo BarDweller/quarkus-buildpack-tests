@@ -135,6 +135,8 @@ jobs:
           podman info --format '{{.Host.RemoteSocket.Path}}'
           echo "as root"
           sudo podman info --format '{{.Host.RemoteSocket.Path}}'
+          export DOCKER_HOST=unix:///run/podman/podman.sock
+          echo "DOCKER_HOST=unix:///run/podman/podman.sock" >> $GITHUB_ENV
           
       - name: Docker Ubuntu
         if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'docker'
