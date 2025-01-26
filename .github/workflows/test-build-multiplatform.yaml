@@ -117,7 +117,7 @@ jobs:
           brew services restart podman
 
       - name: Podman Rootful (podman machine)
-        if: (matrix.projects.runner == 'macos-13' || matrix.projects.runner == 'windows-latest') && (matrix.projects.runtime == 'podman5' || (matrix.projects.runtime == 'podman4') && matrix.projects.root == 'rootful'
+        if: (matrix.projects.runner == 'macos-13' || matrix.projects.runner == 'windows-latest') && (matrix.projects.runtime == 'podman5' || matrix.projects.runtime == 'podman4') && matrix.projects.root == 'rootful'
         run: |
           podman system connection ls
           podman machine stop
@@ -126,7 +126,7 @@ jobs:
           podman system connection ls
 
       - name: Podman Rootful (native)
-        if: matrix.projects.runner == 'ubuntu-24.04' && (matrix.projects.runtime == 'podman5' || (matrix.projects.runtime == 'podman4') && matrix.projects.root == 'rootful'
+        if: matrix.projects.runner == 'ubuntu-24.04' && (matrix.projects.runtime == 'podman5' || matrix.projects.runtime == 'podman4') && matrix.projects.root == 'rootful'
         run: |
           podman system connection ls
           systemctl disable --now --user podman.socket
