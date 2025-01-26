@@ -117,7 +117,7 @@ jobs:
           brew services restart podman
 
       - name: Podman Rootful
-        if: (matrix.projects.runtime == 'podman5' || matrix.projects.runtime == 'podman4') && matrix.projects.root == 'rootful'
+        if: (matrix.projects.runtime == 'podman5' && matrix.projects.root == 'rootful') || (matrix.projects.runtime == 'podman4' && matrix.projects.root == 'rootful')
         run: |
           podman machine set --rootful=true
           
