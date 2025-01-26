@@ -131,7 +131,10 @@ jobs:
           podman system connection ls
           systemctl disable --now --user podman.socket
           sudo systemctl enable --now podman.socket
-          podman info --format '{{.Host.RemoteSocket.Path}}'       
+          echo "as a user"
+          podman info --format '{{.Host.RemoteSocket.Path}}'
+          echo "as root"
+          sudo podman info --format '{{.Host.RemoteSocket.Path}}'
           
       - name: Docker Ubuntu
         if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'docker'
