@@ -23,12 +23,21 @@ jobs:
            { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
            { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "macos-13", runtime: "podman5", root: "rootless"}, 
            { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
-           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman5", root: "rootless"},
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "macos-13", runtime: "podman5", root: "rootlful"},
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootlful"},
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "macos-13", runtime: "podman5", root: "rootlful"}, 
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootlful"},
            { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "docker"},
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "windows-latest", runtime: "docker"},
            { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "macos-13", runtime: "podman5", root: "rootless"},
            { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
            { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "macos-13", runtime: "podman5", root: "rootless"},
            { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootless"},
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "macos-13", runtime: "podman5", root: "rootlful"},
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootlful"},
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "macos-13", runtime: "podman5", root: "rootlful"},
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "podman4", root: "rootlful"},           
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "ubuntu-24.04", runtime: "docker"}
            { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:6652fca0e9", runner: "windows-latest", runtime: "docker"}
         ]
 
@@ -105,7 +114,12 @@ jobs:
           printf "[engine]\nservice_timeout=91\n" | sudo tee -a /etc/containers/containers.conf.d/service-timeout.conf
 
           # restart to allow config to take effect
-          brew services restart podman    
+          brew services restart podman
+
+      - name: Podman Rootful
+        if: (matrix.projects.runtime == 'podman5' || matrix.projects.runtime == 'podman4') && matrix.projects.root == 'rootful'
+        run: |
+          podman machine set --rootful=true
           
       - name: Docker Ubuntu
         if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'docker'
