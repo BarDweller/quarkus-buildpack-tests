@@ -43,7 +43,7 @@ jobs:
 
     runs-on: [ "${{ matrix.projects.runner }}" ]
     # Keep name short, as github ui does not allow many characters to be displayed
-    name: Java ${{ matrix.projects.java }} ${{ matrix.projects.project }} ${{ matrix.projects.runtime }}
+    name: Java ${{ matrix.projects.java }} ${{ matrix.projects.project }} ${{ matrix.projects.runtime }} ${{ matrix.projects.root }} ${{ matrix.projects.runner }}
 
     steps:
 
