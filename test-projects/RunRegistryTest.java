@@ -86,7 +86,7 @@ public class RunRegistryTest {
 
         String registryJson = "{ \"auths\": {";
         for(RegistryAuthConfig rac : authInfo){
-            String b64auth = java.util.Base64.getEncoder().encodeToString(rac.getUsername()+":"+rac.getPassword());
+            String b64auth = java.util.Base64.getEncoder().encodeToString((rac.getUsername()+":"+rac.getPassword()).getBytes());
             registryJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
         }
         registryJson+=" } } ";
