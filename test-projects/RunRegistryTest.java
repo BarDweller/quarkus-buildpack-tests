@@ -22,7 +22,7 @@ import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.api.exception.DockerClientException;
 import com.github.dockerjava.api.exception.NotFoundException;
 
-public class RunTest {
+public class RunRegistryTest {
 
     public static void main(String... args) {
         try{
