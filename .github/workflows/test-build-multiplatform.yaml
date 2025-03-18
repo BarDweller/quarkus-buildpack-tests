@@ -1,4 +1,4 @@
-name: Multi Platform Runner 
+name: Multi Platform Registry Runner 
 
 on: 
   workflow_dispatch:
