@@ -89,11 +89,13 @@ public class RunRegistryTest {
 
       OperatingSytem os = OperatingSytem.getOperationSystem();
       if(os != OperatingSytem.WIN) {
+          System.out.println("Building "+outputImage+" using "+authInfo.size()+" credentials, with builder "+builderImage);
           exitCode = BuildConfig.builder()
                            .withBuilderImage(new ImageReference(builderImage))
                            .withOutputImage(new ImageReference(outputImage))
                            .withNewDockerConfig()
                               .withAuthConfigs(authInfo)
+                              .withUseDaemon(false)
                            .and()
                            .withNewPlatformConfig()
                               .withEnvironment(envMap)
