@@ -79,7 +79,7 @@ public class RunRegistryTest {
         String password = System.getenv("REGISTRY_PASSWORD");
         RegistryAuthConfig authConfig = RegistryAuthConfig.builder()
                                               .withRegistryAddress(registry)
-                                              .withUserName(username)
+                                              .withUsername(username)
                                               .withPassword(password)
                                               .build();
         authInfo.add(authConfig);
