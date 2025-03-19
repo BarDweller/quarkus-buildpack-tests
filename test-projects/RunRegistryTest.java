@@ -93,7 +93,7 @@ public class RunRegistryTest {
 
         String debugJson = "{ \"auths\": {";
         for(RegistryAuthConfig rac : authInfo){
-            String b64auth = java.util.Base64.getEncoder().encodeToString("yyyyyyy:xxxxxx");
+            String b64auth = java.util.Base64.getEncoder().encodeToString("yyyyyyy:xxxxxx".getBytes());
             debugJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
         }
         debugJson+=" } } ";  
