@@ -41,6 +41,7 @@ public class RunRegistryTest {
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.docker","debug");
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.lifecycle","debug");
       System.setProperty("org.slf4j.simpleLogger.log.dev.snowdrop.buildpack.lifecycle.phases","debug");
+      System.setProperty("com.github.dockerjava.core.exec","trace");
 
       String debugScript = "#!/bin/bash\n" +
       "echo \"DEBUG INFO\"\n" +
