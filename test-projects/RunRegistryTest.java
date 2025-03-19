@@ -96,7 +96,7 @@ public class RunRegistryTest {
             if(registryJson.length() > 3){
                 registryJson += ", ";
             }
-            registryJson += " \""+rac.getRegistryAddress()+"\"::\"Basic "+b64auth+"\" ";
+            registryJson += " \""+rac.getRegistryAddress()+"\":\"Basic "+b64auth+"\" ";
         }
         registryJson+=" } ";        
 
@@ -106,7 +106,7 @@ public class RunRegistryTest {
             if(debug.length() > 3){
                 debug += ", ";
             }
-            debug += " \""+rac.getRegistryAddress()+"\"::\"Basic "+b64auth+"\" ";
+            debug += " \""+rac.getRegistryAddress()+"\":\"Basic "+b64auth+"\" ";
         }
         debug+=" } ";  
         System.out.println("DEBUG: "+debug);
