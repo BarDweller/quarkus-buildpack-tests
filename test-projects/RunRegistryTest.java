@@ -84,20 +84,32 @@ public class RunRegistryTest {
                                               .build();
         authInfo.add(authConfig);
 
-        String registryJson = "{ \"auths\": {";
+        // String registryJson = "{ \"auths\": {";
+        // for(RegistryAuthConfig rac : authInfo){
+        //     String b64auth = java.util.Base64.getEncoder().encodeToString((rac.getUsername()+":"+rac.getPassword()).getBytes());
+        //     registryJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
+        // }
+        // registryJson+=" } } ";
+        String registryJson = "{ ";
         for(RegistryAuthConfig rac : authInfo){
             String b64auth = java.util.Base64.getEncoder().encodeToString((rac.getUsername()+":"+rac.getPassword()).getBytes());
-            registryJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
+            if(registryJson.length() > 3){
+                registryJson += ", ";
+            }
+            registryJson += " \""+rac.getRegistryAddress()+"\"::\"Basic "+b64auth+"\" ";
         }
-        registryJson+=" } } ";
+        registryJson+=" } ";        
 
-        String debugJson = "{ \"auths\": {";
+        String debug = "{ ";
         for(RegistryAuthConfig rac : authInfo){
-            String b64auth = java.util.Base64.getEncoder().encodeToString("yyyyyyy:xxxxxx".getBytes());
-            debugJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
+            String b64auth = java.util.Base64.getEncoder().encodeToString("xxxx:yyyyy".getBytes());
+            if(debug.length() > 3){
+                debug += ", ";
+            }
+            debug += " \""+rac.getRegistryAddress()+"\"::\"Basic "+b64auth+"\" ";
         }
-        debugJson+=" } } ";  
-        System.out.println("DEBUG: "+debugJson);
+        debug+=" } ";  
+        System.out.println("DEBUG: "+debug);
 
         envMap.put("CNB_REGISTRY_AUTH", registryJson);
       }
