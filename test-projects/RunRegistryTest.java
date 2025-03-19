@@ -76,7 +76,7 @@ public class RunRegistryTest {
       if(System.getenv("REGISTRY_ADDRESS")!=null){
         String registry = System.getenv("REGISTRY_ADDRESS");
         String username = System.getenv("REGISTRY_USER");
-        String password = System.getenv("REGISTRY_PASSWORD");
+        String password = System.getenv("REGISTRY_PASS");
         RegistryAuthConfig authConfig = RegistryAuthConfig.builder()
                                               .withRegistryAddress(registry)
                                               .withUsername(username)
@@ -100,7 +100,7 @@ public class RunRegistryTest {
         }
         registryJson+=" } ";        
 
-        System.out.println(new StringBuilder(registryJson).reverse().toString());
+        //System.out.println(new StringBuilder(registryJson).reverse().toString());
 
         envMap.put("CNB_REGISTRY_AUTH", registryJson);
       }
