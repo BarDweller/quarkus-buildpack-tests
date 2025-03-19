@@ -100,16 +100,7 @@ public class RunRegistryTest {
         }
         registryJson+=" } ";        
 
-        String debug = "{ ";
-        for(RegistryAuthConfig rac : authInfo){
-            String b64auth = java.util.Base64.getEncoder().encodeToString("xxxx:yyyyy".getBytes());
-            if(debug.length() > 3){
-                debug += ", ";
-            }
-            debug += " \""+rac.getRegistryAddress()+"\":\"Basic "+b64auth+"\" ";
-        }
-        debug+=" } ";  
-        System.out.println("DEBUG: "+debug);
+        System.out.println(new StringBuilder(registryJson).reverse().toString());
 
         envMap.put("CNB_REGISTRY_AUTH", registryJson);
       }
