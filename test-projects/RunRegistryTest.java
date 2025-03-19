@@ -90,6 +90,8 @@ public class RunRegistryTest {
             registryJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
         }
         registryJson+=" } } ";
+
+        envMap.put("CNB_REGISTRY_AUTH", registryJson);
       }
          
       int exitCode = 0;
