@@ -16,7 +16,7 @@ jobs:
       matrix:
         # Define projects to test, don't use generated matrix, as will need projects appropriate for each jvm to test
         projects: [
-           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:2b953b486e", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" }
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:f0ee410c42", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" }
         ]
 
     runs-on: [ "${{ matrix.projects.runner }}" ]
