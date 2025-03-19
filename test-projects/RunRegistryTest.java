@@ -91,6 +91,14 @@ public class RunRegistryTest {
         }
         registryJson+=" } } ";
 
+        String debugJson = "{ \"auths\": {";
+        for(RegistryAuthConfig rac : authInfo){
+            String b64auth = java.util.Base64.getEncoder().encodeToString("yyyyyyy:xxxxxx");
+            debugJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
+        }
+        debugJson+=" } } ";  
+        System.out.println("DEBUG: "+debugJson);
+
         envMap.put("CNB_REGISTRY_AUTH", registryJson);
       }
          
