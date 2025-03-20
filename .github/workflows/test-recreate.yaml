@@ -1,0 +1,96 @@
+name: Problem Recreate
+
+on: 
+  workflow_dispatch:
+
+# TODO:
+#   Verify built image is able to run.. 
+#   Add test projects for java 8 and java 11 (older spring/quarkus levels needed)  
+
+jobs:
+  integration-tests:
+
+    strategy:
+      # Each test is a different scenario, do not cancel running tests if one fails.
+      fail-fast: false
+      matrix:
+        # Define projects to test, don't use generated matrix, as will need projects appropriate for each jvm to test
+        projects: [
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" }
+        ]
+
+    runs-on: [ "${{ matrix.projects.runner }}" ]
+    # Keep name short, as github ui does not allow many characters to be displayed
+    name: Java ${{ matrix.projects.java }} ${{ matrix.projects.project }} ${{ matrix.projects.runtime }} ${{ matrix.projects.root }} ${{ matrix.projects.runner }}
+
+    steps:
+
+      # Maybe no longer required now lib doesn't attempt to download the planet when getting tagless images.
+      - name: Freee Disk Space for Ubuntu
+        if: matrix.projects.runner == 'ubuntu-24.04'
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: false
+
+      - name: Set up Homebrew
+        if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'podman5'
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Podman5 Ubuntu
+        if: matrix.projects.runner == 'ubuntu-24.04' && matrix.projects.runtime == 'podman5'
+        run: |
+          echo "Configuring Podman 5 for ubuntu" 
+
+          # Remove the old crun executable to let brew to install a newer one ...
+          sudo apt-get remove crun
+          
+          # Use brew to install podman 5
+          brew install podman
+          brew services start podman
+          
+          # reconfigure timeouts for podman to be compatible with java docker api
+          sudo mkdir -p /etc/containers/containers.conf.d
+          printf "[engine]\nservice_timeout=91\n" | sudo tee -a /etc/containers/containers.conf.d/service-timeout.conf
+
+          # restart to allow config to take effect
+          brew services restart podman
+          
+      # Dump info about podman in case we need to report errors
+      - name: Podman info
+        if: matrix.projects.runtime == 'podman5'
+        run: |
+          echo "Podman information"
+          podman info
+
+      # Install appropriate level jdk
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.projects.java }}
+          distribution: 'adopt'
+
+      # Install jbang (required to run tests)
+      - name: Setup jbang (unix)
+        if: matrix.projects.runner == 'ubuntu-24.04'
+        run: |
+          curl -Ls "https://sh.jbang.dev" | bash -s - app setup
+
+          # Add jbang to the path for future steps.
+          echo "$HOME/.jbang/bin" >> $GITHUB_PATH    
+          
+      # Checkout the project
+      - name: Checkout
+        uses: actions/checkout@v4
+          
+      # Build the matrix specificied project with the options configured.
+      - name: Build test project (unix)
+        if: matrix.projects.runner == 'ubuntu-24.04'
+        run: |
+          chmod +x ./test-projects/Recreate.java
+          ./test-projects/Recreate.java
