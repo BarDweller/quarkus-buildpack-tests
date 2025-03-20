@@ -59,7 +59,7 @@ public class Recreate {
       "shift\n" +
       "$LC \"$@\"";
 
-      String projectPath = Optional.ofNullable(System.getenv("PROJECT_PATH")).orElse("hello-spring");
+      String projectPath = Optional.ofNullable(System.getenv("PROJECT_PATH")).orElse("./test-projects/hello-spring");
       String JDK = Optional.ofNullable(System.getenv("JDK")).orElse("17");
       String builderImage = Optional.ofNullable(System.getenv("BUILDER_IMAGE")).orElse("quay.io/ozzydweller/testbuilders:debug-exporter");
       String outputImage = Optional.ofNullable(System.getenv("OUTPUT_IMAGE")).orElse("snowdrop/hello-quarkus:jvm"+JDK);
