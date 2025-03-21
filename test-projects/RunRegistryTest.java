@@ -84,26 +84,6 @@ public class RunRegistryTest {
                                               .withPassword(password)
                                               .build();
         authInfo.add(authConfig);
-
-        // String registryJson = "{ \"auths\": {";
-        // for(RegistryAuthConfig rac : authInfo){
-        //     String b64auth = java.util.Base64.getEncoder().encodeToString((rac.getUsername()+":"+rac.getPassword()).getBytes());
-        //     registryJson += " \""+rac.getRegistryAddress()+"\": { \"auth\":\""+b64auth+"\" } ";
-        // }
-        // registryJson+=" } } ";
-        String registryJson = "{ ";
-        for(RegistryAuthConfig rac : authInfo){
-            String b64auth = java.util.Base64.getEncoder().encodeToString((rac.getUsername()+":"+rac.getPassword()).getBytes());
-            if(registryJson.length() > 3){
-                registryJson += ", ";
-            }
-            registryJson += " \""+rac.getRegistryAddress()+"\":\"Basic "+b64auth+"\" ";
-        }
-        registryJson+=" } ";        
-
-        //System.out.println(new StringBuilder(registryJson).reverse().toString());
-
-        envMap.put("CNB_REGISTRY_AUTH", registryJson);
       }
          
       int exitCode = 0;
