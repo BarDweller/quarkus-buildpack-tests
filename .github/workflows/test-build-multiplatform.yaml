@@ -16,27 +16,43 @@ jobs:
       matrix:
         # Define projects to test, don't use generated matrix, as will need projects appropriate for each jvm to test
         projects: [
-           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "macos-13",       runtime: "podman5", root: "rootless" },
-           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" },
-           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootless" },
-           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "macos-13",       runtime: "podman5", root: "rootful" },
-           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootful" },
-           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootful" },
-           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "docker" },
-           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "windows-latest", runtime: "docker" },
-           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "macos-13",       runtime: "podman5", root: "rootless" },
-           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" },
-           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootless" },
-           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "macos-13",       runtime: "podman5", root: "rootful" },
-           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootful" },
-           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootful" },
-           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "ubuntu-24.04",   runtime: "docker" },
-           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:e5ec3820f2", runner: "windows-latest", runtime: "docker" }
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RL-J17-S", runner: "macos-13",       runtime: "podman5", root: "rootless" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RL-J17-S", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RL-J17-S", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootless" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RF-J17-S", runner: "macos-13",       runtime: "podman5", root: "rootful" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RF-J17-S", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootful" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RF-J17-S", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootful" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-D-RL-J17-S",  runner: "ubuntu-24.04",   runtime: "docker" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "W-D-RL-J17-S",  runner: "windows-latest", runtime: "docker" },
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RL-J17-Q", runner: "macos-13",       runtime: "podman5", root: "rootless" },
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RL-J17-Q", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" },
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RL-J17-Q", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootless" },
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RF-J17-Q", runner: "macos-13",       runtime: "podman5", root: "rootful" },
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RF-J17-Q", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootful" },
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RF-J17-Q", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootful" },
+           { project: "hello-quarkus", java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-D-RL-J17-Q",  runner: "ubuntu-24.04",   runtime: "docker" },
+           { project: "hello-spring",  java: "17", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "W-D-RL-J17-Q",  runner: "windows-latest", runtime: "docker" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RL-J21-S", runner: "macos-13",       runtime: "podman5", root: "rootless" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RL-J21-S", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RL-J21-S", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootless" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RF-J21-S", runner: "macos-13",       runtime: "podman5", root: "rootful" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RF-J21-S", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootful" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RF-J21-S", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootful" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-D-RL-J21-S",  runner: "ubuntu-24.04",   runtime: "docker" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "W-D-RL-J21-S",  runner: "windows-latest", runtime: "docker" },
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RL-J21-Q", runner: "macos-13",       runtime: "podman5", root: "rootless" },
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RL-J21-Q", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootless" },
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RL-J21-Q", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootless" },
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "M-P5-RF-J21-Q", runner: "macos-13",       runtime: "podman5", root: "rootful" },
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P5-RF-J21-Q", runner: "ubuntu-24.04",   runtime: "podman5", root: "rootful" },
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-P4-RF-J21-Q", runner: "ubuntu-24.04",   runtime: "podman4", root: "rootful" },
+           { project: "hello-quarkus", java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "U-D-RL-J21-Q",  runner: "ubuntu-24.04",   runtime: "docker" },
+           { project: "hello-spring",  java: "21", java-buildpack-lib-jitpack: "com.github.BarDweller.java-buildpack-client:buildpack-client:1e6326eb84", label: "W-D-RL-J21-Q",  runner: "windows-latest", runtime: "docker" }
         ]
 
     runs-on: [ "${{ matrix.projects.runner }}" ]
     # Keep name short, as github ui does not allow many characters to be displayed
-    name: Java ${{ matrix.projects.java }} ${{ matrix.projects.project }} ${{ matrix.projects.runtime }} ${{ matrix.projects.root }} ${{ matrix.projects.runner }}
+    name: ${{ matrix.projects.label }}
 
     steps:
 
@@ -209,6 +225,8 @@ jobs:
           export CURRENT_WORKFLOW_DEP=${{ matrix.projects.java-buildpack-lib-jitpack }}
           export PROJECT_PATH=./test-projects/${{ matrix.projects.project }}
           export JDK=${{ matrix.projects.java }}
+
+          export OUTPUT_IMAGE=quay.io/ozzydweller/snowdropbuildtests:daemon.${{ matrix.projects.label }}
 
           chmod +x ./test-projects/RunTest.java
           ./test-projects/RunTest.java
