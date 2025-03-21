@@ -230,7 +230,7 @@ jobs:
           export REGISTRY_USER=${{ secrets.QUAY_USER }}
           export REGISTRY_PASS=${{ secrets.QUAY_TOKEN }}
 
-          export OUTPUT_IMAGE=quay.io/ozzydweller/snowdropbuildtests:build.${{ matrix.projects.label }}
+          export OUTPUT_IMAGE=quay.io/ozzydweller/snowdropbuildtests:registry.${{ matrix.projects.label }}
 
           chmod +x ./test-projects/RunRegistryTest.java
           ./test-projects/RunRegistryTest.java
